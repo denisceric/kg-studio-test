@@ -15,6 +15,13 @@
                     @endif
 
                     You are logged in!
+
+                    @foreach($customers as $customer)
+                        <br>
+                        {{ $customer->email }}
+                    @endforeach
+
+                    {{ $customers->links() }}
                 </div>
             </div>
         </div>
