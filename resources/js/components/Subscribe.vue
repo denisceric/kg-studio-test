@@ -4,7 +4,7 @@
             <div class="pb-5">Enter your e-mail and get a lifetime of great daily quotes!</div>
 
             <div class="form-group">
-            <input type="text" :class="['form-control', isEmailValid()]" id="inputSuccess1" v-model="email">
+            <input type="text" :class="['form-control', isEmailValid()]" id="inputSuccess1" v-model="email" placeholder="user@example.com">
             </div>
 
             <div class="w-75 mx-auto">
@@ -21,7 +21,6 @@
 
 <script>
     import Payment from './Payment';
-    import axios from 'axios'
 
     export default {
         name: 'subscribe',
@@ -44,9 +43,7 @@
                 axios.post('/api/add-customer', {
                     email: this.email
                 })
-                .then((response) => {
-                    console.log(response.data);
-                })
+                .then((response) => {})
                 .catch((error) => {
                     console.log(error)
                 })

@@ -17,6 +17,7 @@ class CreateCustomersTable extends Migration
             $table->bigIncrements('id');
             $table->string('email');
             $table->boolean('paid')->default(false);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

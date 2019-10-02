@@ -41,7 +41,7 @@
 
 <script>
 import PayPal from 'vue-paypal-checkout';
-import axios from 'axios'
+
     export default {
         name: 'payment',
         props: ['email'],
@@ -67,7 +67,7 @@ import axios from 'axios'
         },
         methods: {
             paymentStatus() {
-                axios.get('/api/payment-status/', { params: {
+                axios.get('/api/payment-status', { params: {
                     email: this.email
                 }})
                 .then((response) => {

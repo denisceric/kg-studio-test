@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+Route::get('/get-customers', 'CustomerController@index');
 Route::post('/add-customer', 'CustomerController@store');
 Route::post('/customer-paid', 'CustomerController@payment');
-Route::get('/payment-status/{email}', 'CustomerController@status');
+Route::get('/payment-status', 'CustomerController@paymentStatus');

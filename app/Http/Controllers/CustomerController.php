@@ -4,45 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use Illuminate\Http\Request;
+use App\Mail\Welcome;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+
+    public function index() {
+        $customers = Customer::paginate(10);
+
+        return response()->json($customers);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
         $data = $request->validate([
             'email' => 'required'
         ]);
         $checkCustomer = Customer::where('email', $data['email'])->first();
+
         if ($checkCustomer === null) {
+
             $customer = new Customer;
             $customer->email = $data['email'];
             $customer->save();
+
             return response()->json(['success' => 'customer added']);
+
         } else {
             return response()->json(['error' => 'Email already exists.']);
         }
@@ -55,56 +43,31 @@ class CustomerController extends Controller
 
         $customer = Customer::where('email', $data['email'])->update(['paid' => 1]);
 
+        $email = $data['email'];
+
+        $url = URL::signedRoute('unsubscribe', ['email' => $email]);
+        Mail::to($data['email'])->send(new Welcome($url));
+
         return response()->json(['success' => 'customer paid']);
     }
 
-    public function status(Request $request) {
+    public function paymentStatus(Request $request) {
+
         $customer = Customer::where('email', $request->input('email'))->first();
-        return response()->json(['paid' => $customer->paid]);
+
+        if ($customer != null) {
+            
+            return response()->json(['paid' => $customer->paid]);
+        } else {
+            return response()->json(['paid' => false]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
-    {
-        //
+    public function unsubscribe(Request $request) {
+
+        $customer = Customer::where('email', $request->email)->update(['status' => 0]);
+
+        return view('unsubscribed');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Customer $customer)
-    {
-        //
-    }
 }

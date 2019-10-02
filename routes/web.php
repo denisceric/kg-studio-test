@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('/', 'AppController@index');
+Route::get('/', 'AppController@index')->name('index');
 
 Auth::routes();
 
+Route::get('/unsubscribe', 'CustomerController@unsubscribe')->name('unsubscribe');
 Route::get('/home', 'HomeController@index')->name('home');
