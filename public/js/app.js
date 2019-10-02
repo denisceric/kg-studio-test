@@ -1869,6 +1869,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'customers',
@@ -46031,49 +46032,43 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("table", { staticClass: "table" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.customers.data, function(customer) {
-            return _c(
-              "tr",
-              {
-                key: customer.id,
-                style: customer.paid
-                  ? "background:#edffed"
-                  : "background:#fff2f2"
-              },
-              [
-                _c("th", { attrs: { scope: "row" } }, [
-                  _vm._v(_vm._s(customer.id))
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(customer.email))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(customer.paid ? "Yes" : "No"))]),
-                _vm._v(" "),
-                _c("td", [_vm._v("active")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("activate")])
-              ]
-            )
-          }),
-          0
-        )
-      ]),
+  return _c("div", [
+    _c("table", { staticClass: "table" }, [
+      _vm._m(0),
       _vm._v(" "),
-      _c("pagination", {
-        attrs: { data: _vm.customers },
-        on: { "pagination-change-page": _vm.getResults }
-      })
-    ],
-    1
-  )
+      _c(
+        "tbody",
+        _vm._l(_vm.customers.data, function(customer) {
+          return _c("tr", { key: customer.id }, [
+            _c("th", { attrs: { scope: "row" } }, [
+              _vm._v(_vm._s(customer.id))
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(customer.email))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(customer.paid ? "Yes" : "No"))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(customer.status ? "Active" : "Inactive"))]),
+            _vm._v(" "),
+            _c("td", [_vm._v("activate")])
+          ])
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "px-3" },
+      [
+        _c("pagination", {
+          attrs: { data: _vm.customers },
+          on: { "pagination-change-page": _vm.getResults }
+        })
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = [
   function() {

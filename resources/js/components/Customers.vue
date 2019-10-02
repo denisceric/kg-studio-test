@@ -12,17 +12,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="customer in customers.data" :key="customer.id" :style="customer.paid ? 'background:#edffed' : 'background:#fff2f2'">
+                <tr v-for="customer in customers.data" :key="customer.id">
                     <th scope="row">{{ customer.id }}</th>
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.paid ? 'Yes' : 'No' }}</td>
-                    <td>active</td>
+                    <td>{{ customer.status ? 'Active' : 'Inactive' }}</td>
                     <td>activate</td>
                 </tr>
             </tbody>
         </table>
-
-        <pagination :data="customers" @pagination-change-page="getResults"></pagination>
+        <div class="px-3">
+            <pagination :data="customers" @pagination-change-page="getResults"></pagination>
+        </div>
 
     </div>
 </template>

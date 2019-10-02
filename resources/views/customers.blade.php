@@ -6,7 +6,7 @@
         Customers
     </div>
     <div class="bg-white border border-light shadow mx-5 mb-5">
-        Some stats
+        <customers></customers>
     </div>
 
 @endsection

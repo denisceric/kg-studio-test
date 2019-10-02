@@ -12,7 +12,7 @@ class CustomerController extends Controller
 {
 
     public function index() {
-        $customers = Customer::paginate(10);
+        $customers = Customer::paginate(20);
 
         return response()->json($customers);
     }

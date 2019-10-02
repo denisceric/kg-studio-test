@@ -13,7 +13,14 @@
 
 Route::get('/', 'AppController@index')->name('index');
 
+
+
 Auth::routes();
 
-Route::get('/unsubscribe', 'CustomerController@unsubscribe')->name('unsubscribe');
+
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/quotes', 'HomeController@quotes')->name('quotes');
+Route::get('/customers', 'HomeController@customers')->name('customers');
+Route::get('/settings', 'HomeController@settings')->name('settings');
+
+Route::get('/unsubscribe', 'CustomerController@unsubscribe')->name('unsubscribe');
