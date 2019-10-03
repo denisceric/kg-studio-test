@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Customer;
+use App\Quote;
 
 class HomeController extends Controller
 {
@@ -18,8 +19,9 @@ class HomeController extends Controller
     }
 
     public function index() {
-
-        return view('home');
+        $customers = Customer::all()->count();
+        $quotes = Quote::all()->count();
+        return view('home', compact('customers', 'quotes'));
     }
 
     public function quotes() {

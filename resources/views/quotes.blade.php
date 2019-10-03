@@ -6,7 +6,7 @@
         Quotes
     </div>
     <div class="bg-white border border-light shadow mx-5 mb-5">
-        Some quotes
+        <quotes :userid="{{ Auth::id() }}"></quotes>
     </div>
 
 @endsection

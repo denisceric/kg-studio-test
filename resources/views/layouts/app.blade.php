@@ -51,7 +51,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2 py-3 d-flex text-center justify-content-center border-right-0 bg-dark-blue">
-                    <div class="font-weight-bold text-white h4 my-auto">
+                    <div class="font-weight-bold text-white h5 my-auto">
                         Quotes Admin Panel
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="row h-100">
-                <div class="col-2 d-flex p-0 bg-dark-blue2 flex-column vh-100">
+                <div class="col-2 d-flex p-0 bg-dark-blue2 flex-column vh-100 sticky-top">
                     <a href="{{ route('home') }}" class="d-flex w-100 text-white btn link">
                         <div class="col-4 py-1 px-4 d-flex justify-content-center">
                             <div class="my-auto">
