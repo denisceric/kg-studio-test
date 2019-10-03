@@ -1,6 +1,4 @@
-#kg-studio-test
-
-https://github.com/denisceric/kg-studio-test.git
+Laravel 6.0 application
 
 Run:
 
