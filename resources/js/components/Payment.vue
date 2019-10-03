@@ -9,7 +9,20 @@
                     </div>
                     
                     <div class="card-body" style="height: 200px; padding:0">
-                        <div v-if="paid" class="h-100 justify-content-center text-center">
+
+                        <div v-if="paid && active" class="h-100 d-flex justify-content-center text-center">
+                            <h1 class="my-auto">You already completed the payment and your subscription is active!</h1>
+                        </div>
+                        <div v-else-if="paid && !active" class="h-100 d-flex justify-content-center text-center">
+                            <h1 class="my-auto" v-if="reactivation">
+                                We sent an email to {{ this.email }}. Open it up to activate your account.
+                            </h1>
+                            <h1 class="my-auto" v-else>
+                                You already completed the payment and your subscription is not active!
+                                If you want to subscribe again please <a href="#" @click="reactivate()">click here</a>.
+                            </h1>
+                        </div>
+                        <div v-else-if="paymentComplete" class="h-100 justify-content-center text-center">
                             <svg version="1.1" class="m-3" width="68" hieght="68" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
                             <circle style="fill:#25AE88;" cx="25" cy="25" r="25"/>
@@ -27,8 +40,7 @@
                                 :client="paypal"
                                 env="sandbox"
                                 :button-style="btnStyle"
-                                @payment-completed="paymentCompleted"
-                                @payment-cancelled="paymentCancelled">
+                                @payment-completed="paymentCompleted">
                             </PayPal>
                         </div>
                     </div>
@@ -59,17 +71,21 @@ import PayPal from 'vue-paypal-checkout';
                     shape: 'rect',
                     color: 'blue'
                 },
-                paid: false
+                paymentComplete: false,
+                paid: false,
+                active: true,
+                reactivation: false
             }
         },
         mounted() {
             this.paymentStatus()
+            this.isUserActive()
         },
         methods: {
             paymentStatus() {
-                axios.get('/api/payment-status', { params: {
+                axios.post('/api/payment-status', {
                     email: this.email
-                }})
+                })
                 .then((response) => {
                     this.paid = response.data.paid;
                 })
@@ -78,19 +94,37 @@ import PayPal from 'vue-paypal-checkout';
                 })
             },
             paymentCompleted() {
+                this.paymentComplete = true;
                 this.userPaid();
             },
-            paymentCancelled() {
-                console.log('Cancelled!');
-            },
             userPaid() {
-                this.paid = true;
                 axios.post('/api/customer-paid', {
                     email: this.email
                 })
                 .then((response) => {})
                 .catch((error) => {
                     console.log(error)
+                })
+            },
+            isUserActive() {
+                axios.post('/api/customer-status', {
+                    email: this.email
+                })
+                .then((response) => {
+                    this.active = response.data.status
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+            },
+            reactivate() {
+                this.reactivation = true;
+                axios.post('/api/reactivation', {
+                    email: this.email
+                })
+                .then((response) => {})
+                .catch((error) => {
+                    console.log(error);
                 })
             }
         }

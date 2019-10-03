@@ -1970,6 +1970,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'payment',
@@ -1988,20 +2000,22 @@ __webpack_require__.r(__webpack_exports__);
         shape: 'rect',
         color: 'blue'
       },
-      paid: false
+      paymentComplete: false,
+      paid: false,
+      active: true,
+      reactivation: false
     };
   },
   mounted: function mounted() {
     this.paymentStatus();
+    this.isUserActive();
   },
   methods: {
     paymentStatus: function paymentStatus() {
       var _this = this;
 
-      axios.get('/api/payment-status', {
-        params: {
-          email: this.email
-        }
+      axios.post('/api/payment-status', {
+        email: this.email
       }).then(function (response) {
         _this.paid = response.data.paid;
       })["catch"](function (error) {
@@ -2009,14 +2023,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     paymentCompleted: function paymentCompleted() {
+      this.paymentComplete = true;
       this.userPaid();
     },
-    paymentCancelled: function paymentCancelled() {
-      console.log('Cancelled!');
-    },
     userPaid: function userPaid() {
-      this.paid = true;
       axios.post('/api/customer-paid', {
+        email: this.email
+      }).then(function (response) {})["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    isUserActive: function isUserActive() {
+      var _this2 = this;
+
+      axios.post('/api/customer-status', {
+        email: this.email
+      }).then(function (response) {
+        _this2.active = response.data.status;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    reactivate: function reactivate() {
+      this.reactivation = true;
+      axios.post('/api/reactivation', {
         email: this.email
       }).then(function (response) {})["catch"](function (error) {
         console.log(error);
@@ -46357,7 +46387,58 @@ var render = function() {
                     staticStyle: { height: "200px", padding: "0" }
                   },
                   [
-                    _vm.paid
+                    _vm.paid && _vm.active
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "h-100 d-flex justify-content-center text-center"
+                          },
+                          [
+                            _c("h1", { staticClass: "my-auto" }, [
+                              _vm._v(
+                                "You already completed the payment and your subscription is active!"
+                              )
+                            ])
+                          ]
+                        )
+                      : _vm.paid && !_vm.active
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "h-100 d-flex justify-content-center text-center"
+                          },
+                          [
+                            _vm.reactivation
+                              ? _c("h1", { staticClass: "my-auto" }, [
+                                  _vm._v(
+                                    "\r\n                                We sent an email to " +
+                                      _vm._s(this.email) +
+                                      ". Open it up to activate your account.\r\n                            "
+                                  )
+                                ])
+                              : _c("h1", { staticClass: "my-auto" }, [
+                                  _vm._v(
+                                    "\r\n                                You already completed the payment and your subscription is not active!\r\n                                If you want to subscribe again please "
+                                  ),
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.reactivate()
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("click here")]
+                                  ),
+                                  _vm._v(".\r\n                            ")
+                                ])
+                          ]
+                        )
+                      : _vm.paymentComplete
                       ? _c(
                           "div",
                           {
@@ -46425,10 +46506,7 @@ var render = function() {
                                 env: "sandbox",
                                 "button-style": _vm.btnStyle
                               },
-                              on: {
-                                "payment-completed": _vm.paymentCompleted,
-                                "payment-cancelled": _vm.paymentCancelled
-                              }
+                              on: { "payment-completed": _vm.paymentCompleted }
                             })
                           ],
                           1

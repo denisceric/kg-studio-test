@@ -1,6 +1,5 @@
 <html>
     <head>
-        <link href="{{ asset('css/app/css') }}" rel="stylesheet">
     </head>
     <body>
         <div style="text-align:center;font-family:Arial">

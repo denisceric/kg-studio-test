@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 Route::get('/get-customers', 'CustomerController@index');
 Route::post('/add-customer', 'CustomerController@store');
 Route::post('/customer-paid', 'CustomerController@payment');
-Route::get('/payment-status', 'CustomerController@paymentStatus');
-
-
+Route::post('/payment-status', 'CustomerController@paymentStatus');
+Route::post('/customer-status', 'CustomerController@customerStatus');
+Route::post('/reactivation', 'CustomerController@reactivate');
 
