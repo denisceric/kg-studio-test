@@ -70,4 +70,17 @@ class CustomerController extends Controller
         return view('unsubscribed');
     }
 
+    public function actions(Request $request) {
+        $customer = Customer::where('id', $request->id)->first();
+        if ($request->action == 'deactivate') {
+            $customer->status = false;
+        } else {
+            $customer->status = true;
+        }
+
+        $customer->update();
+
+        return response()->json(['success' => 'User changed']);
+    }
+
 }

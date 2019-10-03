@@ -1885,8 +1885,20 @@ __webpack_require__.r(__webpack_exports__);
     this.getResults();
   },
   methods: {
-    getResults: function getResults(page) {
+    actions: function actions(act, id) {
       var _this = this;
+
+      axios.post('/action', {
+        action: act,
+        id: id
+      }).then(function (response) {
+        _this.getResults();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getResults: function getResults(page) {
+      var _this2 = this;
 
       if (typeof page === 'undefined') {
         page = 1;
@@ -1897,7 +1909,7 @@ __webpack_require__.r(__webpack_exports__);
           page: page
         }
       }).then(function (response) {
-        _this.customers = response.data;
+        _this2.customers = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -46233,7 +46245,24 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(customer.status ? "Active" : "Inactive"))]),
             _vm._v(" "),
-            _c("td", [_vm._v("activate")])
+            _c("td", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.actions(
+                        customer.status ? "deactivate" : "activate",
+                        customer.id
+                      )
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(customer.status ? "Deactivate" : "Activate"))]
+              )
+            ])
           ])
         }),
         0

@@ -17,7 +17,7 @@
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.paid ? 'Yes' : 'No' }}</td>
                     <td>{{ customer.status ? 'Active' : 'Inactive' }}</td>
-                    <td>activate</td>
+                    <td><a href="#" @click.prevent="actions(customer.status ? 'deactivate' : 'activate', customer.id)">{{ customer.status ? 'Deactivate' : 'Activate' }}</a></td>
                 </tr>
             </tbody>
         </table>
@@ -43,6 +43,18 @@ export default {
         this.getResults();
     },
     methods: {
+        actions(act, id) {
+            axios.post('/action', {
+                action: act,
+                id: id
+            })
+            .then((response) => {
+                this.getResults();
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        },
         getResults(page) {
             if (typeof page === 'undefined') {
                 page = 1;
