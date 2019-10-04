@@ -4,10 +4,10 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Paid</th>
-                    <th scope="col">Status</th>
+                    <th scope="col" @click="sortBy('id')" class="sort">#</th>
+                    <th scope="col" @click="sortBy('email')" class="sort">E-mail</th>
+                    <th scope="col" @click="sortBy('paid')" class="sort">Paid</th>
+                    <th scope="col" @click="sortBy('status')" class="sort">Status</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -37,6 +37,7 @@ export default {
     data() {
             return {
                 customers: {},
+                sort: 'id'
             }
         },
     created() {
@@ -55,14 +56,19 @@ export default {
                 console.log(error)
             })
         },
+        sortBy(sort) {
+            this.sort = sort;
+            this.getResults();
+        },
         getResults(page) {
             if (typeof page === 'undefined') {
                 page = 1;
             }
 
-            axios.get('/api/get-customers', { params: {
+            axios.post('/api/get-customers', {
+                sort: this.sort,
                 page: page
-            }})
+            })
             .then((response) => {
                 this.customers = response.data
             })
@@ -73,3 +79,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.sort {
+    cursor: pointer;
+}
+.sort:hover {
+    background-color: black;
+}
+</style>

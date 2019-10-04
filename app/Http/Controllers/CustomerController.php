@@ -8,12 +8,14 @@ use App\Mail\Welcome;
 use App\Mail\Verify;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use App\Jobs\StatusChangeEmail;
 
+// Fat controller. TODO: separate functions to another controller.
 class CustomerController extends Controller
 {
 
-    public function index() {
-        $customers = Customer::paginate(20);
+    public function index(Request $request) {
+        $customers = Customer::orderBy($request->sort, 'desc')->paginate(10);
 
         return response()->json($customers);
     }
@@ -89,9 +91,12 @@ class CustomerController extends Controller
             $customer->status = false;
         } else {
             $customer->status = true;
+            $message = (string) 'activated';
         }
 
         $customer->update();
+
+        StatusChangeEmail::dispatch($customer);
 
         return response()->json(['success' => 'User changed']);
     }
@@ -106,7 +111,7 @@ class CustomerController extends Controller
     public function verified(Request $request) {
 
         $customer = Customer::where('email', $request->email)->update(['status' => 1]);
-
+        
         return view('verified');
     }
 
