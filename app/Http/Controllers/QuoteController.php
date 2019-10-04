@@ -16,7 +16,7 @@ class QuoteController extends Controller
 
         if ($data['id'] == Auth::id()) {
 
-            $quotes = Quote::orderBy('created_at', 'desc')->get();
+            $quotes = Quote::orderBy('created_at', 'desc')->paginate(10);
 
             return response()->json($quotes);
         } else {
@@ -24,11 +24,6 @@ class QuoteController extends Controller
             return response()->json(['error' => 'Unauthorized']);
         }
     }
-
-    public function create() {
-        //
-    }
-
 
     public function store(Request $request) {
         $data = $request->validate([
@@ -42,18 +37,6 @@ class QuoteController extends Controller
         $quote->save();
 
         return response()->json(['success' => 'Quote added.']);
-    }
-
-    public function show(Quote $quote) {
-        //
-    }
-
-    public function edit(Quote $quote) {
-        //
-    }
-
-    public function update(Request $request, Quote $quote) {
-        //
     }
 
     public function destroy(Request $request) {

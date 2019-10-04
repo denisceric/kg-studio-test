@@ -25,6 +25,7 @@ Route::post('/scheduler', 'HomeController@scheduler')->name('scheduler');
 
 Route::get('/unsubscribe', 'CustomerController@unsubscribe')->name('unsubscribe');
 Route::get('/verified', 'CustomerController@verified')->name('verified');
+Route::get('/status-change', 'CustomerController@statusChange')->name('statuschange');
 
 Route::group(['middleware' => ['auth']], function () { 
     Route::post('/get-quotes', 'QuoteController@index');

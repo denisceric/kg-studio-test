@@ -15,7 +15,7 @@
             <div class="h3 px-3">
                 Quotes:
             </div>
-            <div class="card my-3 mx-3 border border-info" v-for="quot in quotes" v-bind:key="quot.id">
+            <div class="card my-3 mx-3 border border-info" v-for="quot in quotes.data" v-bind:key="quot.id">
                 <div class="card-body">
 
                     <div class="card m-5 border border-success" v-if="editMode == quot.id">
@@ -31,8 +31,8 @@
 
                     <blockquote class="blockquote mx-auto text-dark text-left" v-else>
                         <div class="actions">
-                            <a href="#" @click.prevent="editModeActivated(quot.id, quot.author, quot.quote)" class="btn edit py-1 m-2 text-white">Edit</a>
-                            <a href="#" @click.prevent="deleteQuote(quot.id)" class="btn delete py-1 m-2 text-white">Delete</a>
+                            <a href="#" @click.prevent="editModeActivated(quot.id, quot.author, quot.quote)" class="btn edit py-1 m-1 text-white">Edit</a>
+                            <a href="#" @click.prevent="deleteQuote(quot.id)" class="btn delete py-1 m-1 text-white">Delete</a>
                         </div>
                         <p class="mb-0">{{ quot.quote }}</p>
                         <footer class="blockquote-footer text-right text-dark">
@@ -43,14 +43,21 @@
                     </blockquote>
                 </div>
             </div>
+            <div class="px-3">
+                <pagination :data="quotes" @pagination-change-page="getQuotes"></pagination>
+            </div>
+
         </div>
     </div>
 </template>
 
 <script>
+import Pagination from 'laravel-vue-pagination';
+
 export default {
     name: 'quotes',
     props: ['userid'],
+    components: { Pagination },
     data() {
         return {
             quotes: {},
@@ -61,8 +68,8 @@ export default {
             editMode: false
         }
     },
-    mounted() {
-        this.getQuotes()
+    created() {
+        this.getQuotes();
     },
     methods: {
         addQuote() {
@@ -110,9 +117,13 @@ export default {
                 console.log(error);
             })
         },
-        getQuotes() {
+        getQuotes(page) {
+            if (typeof page === 'undefined') {
+                page = 1;
+            }
             axios.post('/get-quotes', {
-                id: this.userid
+                id: this.userid,
+                page: page
             })
             .then((response) => {
                 this.quotes = response.data
@@ -129,7 +140,7 @@ export default {
 .actions {
     position: absolute;
     right: 0;
-    top: 0;
+    bottom: 0;
 }
 .edit {
     background-color: rgba(99, 181, 253, 0.452);
