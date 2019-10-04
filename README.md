@@ -16,6 +16,8 @@ To test the scheduler run:
 
     php artisan scheduler:run
 
+
 Admin credentials:
+
     email: admin@example.com
     password: 12345678
