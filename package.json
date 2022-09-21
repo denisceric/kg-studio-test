@@ -26,6 +26,6 @@
     "dependencies": {
         "laravel-vue-pagination": "^2.3.0",
         "vue-paypal-checkout": "^3.2.0",
-        "vuetify": "^2.0.19"
+        "vuetify": "^2.6.10"
     }
 }
